@@ -1,0 +1,38 @@
+#copy the frame from csapp
+    .pos 0
+    irmovl stack,%esp
+    call main
+    halt
+# Sample linked list
+    .pos 200
+    .align 4
+ele1:
+    .long 0x00a
+    .long ele2
+ele2:
+    .long 0x0b0
+    .long ele3
+ele3:
+    .long 0xc00
+    .long 0
+#进行加法的时候，每次加法的结果存入到rax
+#将节点之中下一个的指针存入到rbx
+#rcx作暂存的寄存器
+
+main:
+    irmovl 0,%eax
+    irmovl ele1,%ebx
+    call sum_list
+    ret
+L1:
+    mrmovl (%ebx),%ecx #取出了数据
+    addl %ecx,%eax      #加到eax
+    rrmovl %ebx,%ecx        #
+    mrmovl 4(%ecx),%ebx
+sum_list:
+    subl %edx,%ebx 
+    jne L1              #if not zreo
+    ret
+
+    .pos 0x2000
+stack:

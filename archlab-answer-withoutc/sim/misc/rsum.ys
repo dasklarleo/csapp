@@ -1,0 +1,33 @@
+#copy the frame from csapp
+    .pos 0
+    irmovl stack,%esp
+    call main
+    halt
+# Sample linked list
+    .pos 200
+    .align 4
+ele1:
+    .long 0x00a
+    .long ele2
+ele2:
+    .long 0x0b0
+    .long ele3
+ele3:
+    .long 0xc00
+    .long 0
+
+main:
+    irmovl 0,%eax
+    irmovl ele1,%ebx
+    call rsum_list
+    ret
+rsum_list:
+    mrmovl (%ebx),%ecx #取出了数据
+    addl %ecx,%eax      #加到eax
+    rrmovl %ebx,%ecx        #
+    mrmovl 4(%ecx),%ebx
+    subl %edx,%ebx 
+    jne rsum_list              #if not zreo
+    ret
+.pos 0x2000
+stack:

@@ -1,0 +1,38 @@
+                      | #copy the frame from csapp
+  0x000:              |     .pos 0
+  0x000: 30f400200000 |     irmovl stack,%esp
+  0x006: 80e0000000   |     call main
+  0x00b: 00           |     halt
+                      | # Sample linked list
+  0x0c8:              |     .pos 200
+  0x0c8:              |     .align 4
+  0x0c8:              | ele1:
+  0x0c8: 0a000000     |     .long 0x00a
+  0x0cc: d0000000     |     .long ele2
+  0x0d0:              | ele2:
+  0x0d0: b0000000     |     .long 0x0b0
+  0x0d4: d8000000     |     .long ele3
+  0x0d8:              | ele3:
+  0x0d8: 000c0000     |     .long 0xc00
+  0x0dc: 00000000     |     .long 0
+                      | #进行加法的时候，每次加法的结果存入到rax
+                      | #将节点之中下一个的指针存入到rbx
+                      | #rcx作暂存的寄存器
+                      | 
+  0x0e0:              | main:
+  0x0e0: 30f000000000 |     irmovl 0,%eax
+  0x0e6: 30f3c8000000 |     irmovl ele1,%ebx
+  0x0ec: 8002010000   |     call sum_list
+  0x0f1: 90           |     ret
+  0x0f2:              | L1:
+  0x0f2: 501300000000 |     mrmovl (%ebx),%ecx #取出了数据
+  0x0f8: 6010         |     addl %ecx,%eax      #加到eax
+  0x0fa: 2031         |     rrmovl %ebx,%ecx        #
+  0x0fc: 503104000000 |     mrmovl 4(%ecx),%ebx
+  0x102:              | sum_list:
+  0x102: 6123         |     subl %edx,%ebx 
+  0x104: 74f2000000   |     jne L1              #if not zreo
+  0x109: 90           |     ret
+                      | 
+  0x000:              |     .pos 0x2000
+  0x000:              | stack:

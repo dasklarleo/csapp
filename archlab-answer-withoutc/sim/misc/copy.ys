@@ -1,0 +1,41 @@
+#copy the frame from csapp
+    .pos 0
+    irmovl stack,%esp
+    call main
+    halt
+.pos 200
+.align 4
+# Source block
+src:
+        .long 0x00a
+        .long 0x0b0
+        .long 0xc00
+# Destination block
+dest:
+        .long 0x111
+        .long 0x222
+        .long 0x333
+
+main:
+    irmovl 3,%eax#复制三块数据
+    irmovl src,%ebx#src
+    irmovl dest,%ecx#dest
+    irmovl -1,%edx
+    rrmovl %edx,%r10d
+    call copy
+    ret
+L1:
+    rrmovl %eax,%r8d
+    rrmovl %eax,%r9d
+    addl %ebx,%r8d
+    addl %ecx,%r9d
+    mrmovl (%ebx),%edx
+    rmmovl (%edx),%ebx
+copy:
+    subl %r10d,%eax
+    jne L1 
+    ret
+
+
+.pos 0x2000
+stack:
